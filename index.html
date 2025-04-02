@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Krümelmonster for Bundestag</title>
+        <title>Mit besten Grüßen! </title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
@@ -22,23 +22,35 @@
                 <meta itemprop="copyright" content="We dont claim any copyright!">
             </video>
         </div>
-        <button onclick="arm()">Arm!</button>
+        <button onclick="arm()" class="setup">Arm!</button>
+        <input type="number" id="hourToWake" class="setup">
+        <input type="number" id="minuteToWake" class="setup">
 <script>
     function action() {
-        document.getElementById("myVideo").style.opacity = 0;
+        document.getElementById("myVideo").style.opacity = 100;
         document.getElementById("myVideo").muted = false;
+        document.getElementById("myVideo").requestFullscreen();
+        console.log("started video")
     }
     function arm() {
-        document.getElementById("myVideo").style.opacity = 100;
+        document.getElementById("myVideo").style.opacity = 0;
         document.getElementById("myVideo").muted = true;
-        var hourToWake = 16;
-        var minuteToWake = 10;
+        console.log("Armed! Time till wake up (ms):")
+        
+        var hourToWake = document.getElementById("hourToWake").value;
+        var minuteToWake = document.getElementById("minuteToWake").value;
         var now = new Date();
-        var millisTillTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, 0, 0) - now;
+        var millisTillTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hourToWake, minuteToWake, 0, 0).getTime() - now.getTime();
         if (millisTillTime < 0) {
-            millisTilltime += 86400000; // it's after 10am, try 10am tomorrow.
+            millisTillTime += 86400000; // it's after 10am, try 10am tomorrow.
         }
-        setTimeout(function(){action()}, millisTill10);
+        
+        const elements = document.getElementsByClassName("setup");
+        while(elements.length > 0){
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+        console.log(millisTillTime)
+        setTimeout(function(){action()}, millisTillTime);
     }
 </script>
 </body>
